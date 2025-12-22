@@ -1,0 +1,36 @@
+{
+  "name": "metadat-benchmark",
+  "version": "1.0.0",
+  "description": "MetaDat cross-platform performance benchmark suite with REST API",
+  "main": "src/server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/server.ts",
+    "start": "bun src/server.ts",
+    "build": "bun build src/server.ts --outdir ./dist --target bun",
+    "generate": "bun src/data-generator.ts",
+    "benchmark": "bun src/benchmark.ts",
+    "benchmark-all": "bun src/benchmark.ts --all-languages",
+    "parquet-benchmark": "bun src/parquet-benchmark.ts",
+    "test": "bun test",
+    "clean": "rm -rf test-data dist benchmark-results"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.5.0",
+    "hono": "^3.12.0",
+    "parquetjs": "^0.11.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20.10.0"
+  },
+  "keywords": [
+    "metadat",
+    "benchmark",
+    "performance",
+    "serialization",
+    "data-format"
+  ],
+  "author": "Apaichon Punopas",
+  "license": "MIT"
+}
