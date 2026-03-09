@@ -51,12 +51,20 @@ meta
     name: string
     age: int
     scores: float64[]
+    balance: decimal
+    avatar: binary
+    flags: byte[]
 data
     name:
         John Doe
     age:
         42
     scores[3]: 85.5|92.0|88.3
+    balance:
+        12345.6789012345
+    avatar:
+        SGVsbG8gV29ybGQ=
+    flags[3]: 0|128|255
 ```
 
 ## Type System
@@ -70,7 +78,10 @@ data
 | `int64` | 64-bit signed integer | `9223372036854775807` |
 | `float32` | 32-bit floating point | `3.14` |
 | `float64` | 64-bit floating point | `3.141592653589793` |
+| `decimal` | Arbitrary-precision decimal | `12345.6789` |
 | `bool` | Boolean value | `true` or `false` |
+| `binary` | Base64-encoded binary data | `SGVsbG8gV29ybGQ=` |
+| `byte` | Single unsigned byte (0-255) | `255` |
 
 ### Complex Types
 
@@ -112,15 +123,21 @@ meta
     title: string
     count: int
     ratio: float64
-    
+    price: decimal
+
+    # Binary and byte fields
+    avatar: binary
+    statusCode: byte
+
     # Array field
     tags: string[]
-    
+    payload: byte[]
+
     # Object field
     author: {name:string|email:string}
-    
+
     # Array of objects
-    items: {id:int|label:string|price:float64}[]
+    items: {id:int|label:string|price:decimal}[]
 ```
 
 ## Data Representation
@@ -233,8 +250,11 @@ parseData(dataSection, schema):
 ### Value Formatting
 1. **Strings**: Written as-is, escape pipe characters
 2. **Numbers**: Convert to string representation
-3. **Booleans**: `true` or `false`
-4. **Null/Undefined**: Empty string
+3. **Decimals**: Written as exact decimal string (no floating-point rounding)
+4. **Booleans**: `true` or `false`
+5. **Binary**: Encode raw bytes as Base64 string
+6. **Byte**: Write as unsigned integer (0-255)
+7. **Null/Undefined**: Empty string
 
 ### Array Serialization
 ```
@@ -369,6 +389,10 @@ interface ParseError {
 4. **Schema transformers**: Migration between versions
 
 ## Version History
+- **v1.1** (2025): Extended type system
+  - Added `decimal` type for arbitrary-precision decimal values
+  - Added `binary` type for Base64-encoded binary data
+  - Added `byte` type for single unsigned byte values (0-255)
 - **v1.0** (2025): Initial specification
   - Basic type system
   - Single and separated file formats
